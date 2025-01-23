@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>โปรแกรมคำนวณเปอร์เซ็นต์การย่อยสลาย - MUTELU</title>
+
+  <!-- ตัวอย่าง CSS ตกแต่ง -->
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      background: #fafafa;
+    }
+    h1, h2 {
+      color: #444;
+    }
+    form {
+      background: #fff;
+      padding: 15px;
+      border: 1px solid #ccc;
+      max-width: 400px;
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: inline-block;
+    }
+    select {
+      margin: 5px 0 10px 0;
+      display: block;
+      padding: 5px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 8px 16px;
+      background: #ff7f50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:hover {
+      background: #ff6430;
+    }
+    #resultContainer {
+      background: #fff;
+      padding: 15px;
+      border: 1px solid #ccc;
+      max-width: 400px;
+    }
+    #resultPercentage {
+      font-size: 1.2rem;
+      color: #00008b;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    #resultMessage {
+      font-style: italic;
+      margin-bottom: 15px;
+    }
+    #tarotSection button {
+      background: #ff4d4d;
+      margin-top: 10px;
+    }
+    #tarotSection button:hover {
+      background: #e63a3a;
+    }
+    #tarotResult {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #b22222;
+    }
+    .note {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    /* ส่วนรูปที่จะแสดงผล */
+    #resultImage {
+      display: block;
+      max-width: 200px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>โปรแกรมคำนวณเปอร์เซ็นต์การย่อยสลายของตุ๊กตาม้า (MUTELU)</h1>
+
+  <!-- ฟอร์มสำหรับรับข้อมูลจากผู้ใช้ -->
+  <form id="decompositionForm">
+    <label for="startDay">วัน</label>
+    <!-- 
+      จะใช้ JS เพื่อสร้าง option 1..31 
+      ในกรณีที่ไม่อยากเขียน option ทีละตัว 
+    -->
+    <select id="startDay" name="startDay">
+      <option value="">-- Date --</option>
+    </select>
+
+    <select id="startMonth" name="startMonth">
+      <option value="">-- Month --</option>
+    </select>
+
+    <select id="startYear" name="startYear">
+      <option value="">-- Year --</option>
+    </select>
+
+    <label for="location">สถานที่ที่ใช้สินค้า (จังหวัด):</label>
+    <select id="location" name="location">
+      <option value="">-- เลือกจังหวัด --</option>
+      <option value="กรุงเทพมหานคร">กรุงเทพมหานคร</option>
+      <option value="กระบี่">กระบี่</option>
+      <option value="กาญจนบุรี">กาญจนบุรี</option>
+      <option value="กาฬสินธุ์">กาฬสินธุ์</option>
+      <option value="กำแพงเพชร">กำแพงเพชร</option>
+      <option value="ขอนแก่น">ขอนแก่น</option>
+      <option value="จันทบุรี">จันทบุรี</option>
+      <option value="ฉะเชิงเทรา">ฉะเชิงเทรา</option>
+      <option value="ชลบุรี">ชลบุรี</option>
+      <option value="ชัยนาท">ชัยนาท</option>
+      <option value="ชัยภูมิ">ชัยภูมิ</option>
+      <option value="ชุมพร">ชุมพร</option>
+      <option value="เชียงราย">เชียงราย</option>
+      <option value="เชียงใหม่">เชียงใหม่</option>
+      <option value="ตรัง">ตรัง</option>
+      <option value="ตราด">ตราด</option>
+      <option value="ตาก">ตาก</option>
+      <option value="นครนายก">นครนายก</option>
+      <option value="นครปฐม">นครปฐม</option>
+      <option value="นครพนม">นครพนม</option>
+      <option value="นครราชสีมา">นครราชสีมา</option>
+      <option value="นครศรีธรรมราช">นครศรีธรรมราช</option>
+      <option value="นครสวรรค์">นครสวรรค์</option>
+      <option value="นนทบุรี">นนทบุรี</option>
+      <option value="นราธิวาส">นราธิวาส</option>
+      <option value="น่าน">น่าน</option>
+      <option value="บึงกาฬ">บึงกาฬ</option>
+      <option value="บุรีรัมย์">บุรีรัมย์</option>
+      <option value="ปทุมธานี">ปทุมธานี</option>
+      <option value="ประจวบคีรีขันธ์">ประจวบคีรีขันธ์</option>
+      <option value="ปราจีนบุรี">ปราจีนบุรี</option>
+      <option value="ปัตตานี">ปัตตานี</option>
+      <option value="พระนครศรีอยุธยา">พระนครศรีอยุธยา</option>
+      <option value="พังงา">พังงา</option>
+      <option value="พัทลุง">พัทลุง</option>
+      <option value="พิจิตร">พิจิตร</option>
+      <option value="พิษณุโลก">พิษณุโลก</option>
+      <option value="เพชรบุรี">เพชรบุรี</option>
+      <option value="เพชรบูรณ์">เพชรบูรณ์</option>
+      <option value="แพร่">แพร่</option>
+      <option value="พะเยา">พะเยา</option>
+      <option value="ภูเก็ต">ภูเก็ต</option>
+      <option value="มหาสารคาม">มหาสารคาม</option>
+      <option value="มุกดาหาร">มุกดาหาร</option>
+      <option value="แม่ฮ่องสอน">แม่ฮ่องสอน</option>
+      <option value="ยโสธร">ยโสธร</option>
+      <option value="ยะลา">ยะลา</option>
+      <option value="ร้อยเอ็ด">ร้อยเอ็ด</option>
+      <option value="ระนอง">ระนอง</option>
+      <option value="ระยอง">ระยอง</option>
+      <option value="ราชบุรี">ราชบุรี</option>
+      <option value="ลพบุรี">ลพบุรี</option>
+      <option value="ลำปาง">ลำปาง</option>
+      <option value="ลำพูน">ลำพูน</option>
+      <option value="เลย">เลย</option>
+      <option value="ศรีสะเกษ">ศรีสะเกษ</option>
+      <option value="สกลนคร">สกลนคร</option>
+      <option value="สงขลา">สงขลา</option>
+      <option value="สตูล">สตูล</option>
+      <option value="สมุทรปราการ">สมุทรปราการ</option>
+      <option value="สมุทรสงคราม">สมุทรสงคราม</option>
+      <option value="สมุทรสาคร">สมุทรสาคร</option>
+      <option value="สระแก้ว">สระแก้ว</option>
+      <option value="สระบุรี">สระบุรี</option>
+      <option value="สิงห์บุรี">สิงห์บุรี</option>
+      <option value="สุโขทัย">สุโขทัย</option>
+      <option value="สุพรรณบุรี">สุพรรณบุรี</option>
+      <option value="สุราษฎร์ธานี">สุราษฎร์ธานี</option>
+      <option value="สุรินทร์">สุรินทร์</option>
+      <option value="หนองคาย">หนองคาย</option>
+      <option value="หนองบัวลำภู">หนองบัวลำภู</option>
+      <option value="อ่างทอง">อ่างทอง</option>
+      <option value="อำนาจเจริญ">อำนาจเจริญ</option>
+      <option value="อุดรธานี">อุดรธานี</option>
+      <option value="อุตรดิตถ์">อุตรดิตถ์</option>
+      <option value="อุทัยธานี">อุทัยธานี</option>
+      <option value="อุบลราชธานี">อุบลราชธานี</option>
+    </select>
+
+    <button type="button" id="startProgramBtn">เริ่มโปรแกรม</button>
+  </form>
+
+  <!-- ส่วนแสดงผลลัพธ์ -->
+  <div id="resultContainer" style="display: none;">
+    <h2>ผลการคำนวณเปอร์เซ็นต์การย่อยสลาย</h2>
+    <p id="resultPercentage"></p>
+    <p id="resultMessage"></p>
+
+    <!-- รูปภาพที่จะแสดงตามช่วงเปอร์เซ็นต์ -->
+    <img id="resultImage" src="" alt="Result Image" style="display:none;" />
+
+    <!-- ปุ่มสุ่มไพ่ยิบซี จะแสดงเมื่อครบ 100% -->
+    <div id="tarotSection" style="display: none;">
+      <button id="drawTarotBtn">สุ่มไพ่ยิบซี</button>
+      <div id="tarotResult"></div>
+    </div>
+  </div>
+
+  <!-- สคริปต์ส่วนแรก สำหรับสร้าง option วัน/เดือน/ปี อัตโนมัติ -->
+  <script>
+    // สร้างตัวเลือกวัน (1..31)
+    const startDaySelect = document.getElementById("startDay");
+    for (let d = 1; d <= 31; d++) {
+      const option = document.createElement("option");
+      option.value = d;
+      option.text = d;
+      startDaySelect.appendChild(option);
+    }
+
+    // สร้างตัวเลือกเดือน (1..12)
+    // สามารถกำหนดชื่อเดือนภาษาไทยเป็น Array
+    const monthsThai = [
+      "มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน",
+      "กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"
+    ];
+    const startMonthSelect = document.getElementById("startMonth");
+    for (let m = 1; m <= 12; m++) {
+      const option = document.createElement("option");
+      option.value = m;
+      option.text = `${monthsThai[m-1]}`; // แสดงชื่อเดือน
+      startMonthSelect.appendChild(option);
+    }
+
+    // สร้างตัวเลือกปี (เช่น 2566..2575 -> รวม 10 ปี หรือจะมากกว่านี้ก็ได้)
+    const startYearSelect = document.getElementById("startYear");
+    for (let y = 2566; y <= 2575; y++) {
+      const option = document.createElement("option");
+      option.value = y;
+      option.text = y;
+      startYearSelect.appendChild(option);
+    }
+  </script>
+
+  <!-- เรียกใช้ไฟล์ script.js (หลัก) -->
+  <script src="script.js"></script>
+</body>
+</html>
